@@ -4,17 +4,18 @@ export const routes: Routes = [
     {
         path: 'auth', 
         loadChildren: () => import('./features/auth/auth-module').then(m => m.AuthModule)
-
     },
     {
-    path: '',
-    redirectTo: '/auth/login',
-    pathMatch: 'full'
+        path: 'admin',
+        loadChildren: () => import('./features/admin/admin-module').then(m => m.AdminModule)
     },
     {
-  path: 'driver',
-  loadChildren: () => import('./features/driver/driver-module').then(m => m.DriverRoutingModule)
-}
-
-
+        path: 'driver',
+        loadChildren: () => import('./features/driver/driver-module').then(m => m.DriverRoutingModule)
+    },
+    {
+        path: '',
+        redirectTo: '/auth/login',
+        pathMatch: 'full'
+    }
 ];

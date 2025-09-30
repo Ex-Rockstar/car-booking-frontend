@@ -1,0 +1,15 @@
+<div class="min-h-screen bg-[#E6E6E6] p-6">
+  <div class="flex items-center justify-between mb-4">
+    <h1 class="text-[#A225CC] text-2xl font-semibold">Revenue (Real-time)</h1>
+    <a class="bg-[#A225CC] text-white no-underline px-4 py-2 rounded-lg" routerLink="/admin/dashboard">Back to Dashboard</a>
+  </div>
+
+  <div class="bg-white border border-gray-300 rounded-lg p-4">
+    <div class="flex items-center justify-between mb-2">
+      <div class="text-gray-700">Latest revenue</div>
+      <div class="text-[#A225CC] text-xl font-semibold">{{ latestRevenue | currency:'INR':'symbol':'1.0-0' }}</div>
+    </div>
+    <canvas #chartCanvas class="w-full h-[360px]"></canvas>
+  </div>
+</div>
+
