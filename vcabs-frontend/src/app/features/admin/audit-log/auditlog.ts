@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 interface AuditLogEntry {
   timestamp: string;
@@ -12,17 +13,18 @@ interface AuditLogEntry {
 }
 
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-auditlog',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './auditlog.html',
 })
 export class Auditlog implements OnInit {
   auditLogs: AuditLogEntry[] = [];
 
-  constructor() {}
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     // Generate 50+ mock rows
@@ -73,6 +75,10 @@ export class Auditlog implements OnInit {
         ipAddress: `192.168.1.${Math.floor(Math.random() * 255)}`,
       });
     }
+  }
+
+  goToDashboard(): void {
+    this.router.navigate(['/admin/dashboard']);
   }
 }
 
