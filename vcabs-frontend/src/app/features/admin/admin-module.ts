@@ -7,6 +7,7 @@ import { ActiveRides } from './active-rides/active-rides';
 import { CompletedRides } from './completed-rides/completed-rides';
 import { Customers } from './customers/customers';
 import { Revenue } from './revenue/revenue';
+import { Auditlog } from './audit-log/auditlog';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { Revenue } from './revenue/revenue';
     ActiveRides,
     CompletedRides,
     Customers,
-    Revenue
+  Revenue,
+  Auditlog
   ]
 })
 export class AdminModule { }

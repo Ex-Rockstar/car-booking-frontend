@@ -1,0 +1,43 @@
+<div class="min-h-screen bg-[#E6E6E6] p-6">
+  <h2 class="text-[#4B006E] text-2xl font-semibold mb-6">Audit Log</h2>
+
+  <div class="overflow-x-auto bg-white rounded-xl shadow-md">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-[#A225CC] text-white">
+        <tr>
+          <th class="px-6 py-3 text-left text-sm font-medium uppercase">Timestamp</th>
+          <th class="px-6 py-3 text-left text-sm font-medium uppercase">Actor Type</th>
+          <th class="px-6 py-3 text-left text-sm font-medium uppercase">Actor Name</th>
+          <th class="px-6 py-3 text-left text-sm font-medium uppercase">Action</th>
+          <th class="px-6 py-3 text-left text-sm font-medium uppercase">Entity</th>
+          <th class="px-6 py-3 text-left text-sm font-medium uppercase">Details</th>
+          <th class="px-6 py-3 text-left text-sm font-medium uppercase">Status</th>
+          <th class="px-6 py-3 text-left text-sm font-medium uppercase">IP Address</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-200">
+        <tr *ngFor="let log of auditLogs" class="hover:bg-[#F8F0FB]">
+          <td class="px-6 py-4 text-sm text-gray-700">{{ log.timestamp }}</td>
+          <td class="px-6 py-4 text-sm font-medium"
+              [ngClass]="{
+                'text-purple-600': log.actorType==='Admin',
+                'text-blue-600': log.actorType==='Driver',
+                'text-green-600': log.actorType==='Customer'
+              }">
+            {{ log.actorType }}
+          </td>
+          <td class="px-6 py-4 text-sm text-gray-700">{{ log.actorName }}</td>
+          <td class="px-6 py-4 text-sm text-gray-700">{{ log.action }}</td>
+          <td class="px-6 py-4 text-sm text-gray-700">{{ log.entity }}</td>
+          <td class="px-6 py-4 text-sm text-gray-700">{{ log.details }}</td>
+          <td class="px-6 py-4 text-sm font-semibold"
+              [ngClass]="{'text-green-600': log.status==='Success','text-red-600': log.status==='Failed'}">
+            {{ log.status }}
+          </td>
+          <td class="px-6 py-4 text-sm text-gray-700">{{ log.ipAddress }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
