@@ -6,6 +6,10 @@ import { CompletedRides } from './completed-rides/completed-rides';
 import { Customers } from './customers/customers';
 import { Revenue } from './revenue/revenue';
 import { Auditlog } from './audit-log/auditlog';
+import { CancelledRides } from './cancelled-rides/cancelled-rides';
+import { Driver } from './driver/driver';
+import { Billing } from './billing/billing';
+import { Rental } from './rental/rental';
 
 const routes: Routes = [
   {
@@ -24,6 +28,23 @@ const routes: Routes = [
   {
     path: 'completed-rides',
     component: CompletedRides
+  },
+  {
+    path: 'cancelled-rides',
+    component: CancelledRides
+  },
+  {
+    path: 'driver',
+    component: Driver
+  },
+  {
+    path: 'billing',
+    component: Billing
+  },
+
+  {
+    path: 'rental',
+    component: Rental
   },
   {
     path: 'customers',

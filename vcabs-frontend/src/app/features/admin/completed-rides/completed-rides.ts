@@ -49,7 +49,12 @@ export class CompletedRides {
     { customerId: 'CUST-2027', customerName: 'Divya Menon', driverId: 'DRV-246', pickupLocation: 'Velachery, Chennai', dropLocation: 'Tambaram, Chennai', amount: 280 },
     { customerId: 'CUST-2028', customerName: 'Aman Jain', driverId: 'DRV-247', pickupLocation: 'Kothrud, Pune', dropLocation: 'Wakad, Pune', amount: 300 },
     { customerId: 'CUST-2029', customerName: 'Neha Gupta', driverId: 'DRV-248', pickupLocation: 'Vashi, Navi Mumbai', dropLocation: 'Panvel, Navi Mumbai', amount: 420 },
-    { customerId: 'CUST-2030', customerName: 'Suresh Patil', driverId: 'DRV-249', pickupLocation: 'Jayanagar, Bengaluru', dropLocation: 'JP Nagar, Bengaluru', amount: 280 }
+    { customerId: 'CUST-2030', customerName: 'Suresh Patil', driverId: 'DRV-249', pickupLocation: 'Jayanagar, Bengaluru', dropLocation: 'JP Nagar, Bengaluru', amount: 280 },
+    { customerId: 'CUST-2030', customerName: 'Suresh Patil', driverId: "DRV-249", pickupLocation: "Jayanagar, Bengaluru", dropLocation: "JP Nagar, Bengaluru", amount: 280 },
+    { customerId: "CUST-2031", customerName: "Priya Sharma", driverId: "DRV-102", pickupLocation: "BTM Layout, Bengaluru", dropLocation: "Koramangala, Bengaluru", amount: 210 },
+    { customerId: "CUST-2032", customerName: "Rahul Mehta", driverId: "DRV-315", pickupLocation: "Indiranagar, Bengaluru", dropLocation: "Whitefield, Bengaluru", amount: 420 },
+    { customerId: 'CUST-2033', customerName: 'Deepa Reddy', driverId: 'DRV-287', pickupLocation: 'HSR Layout, Bengaluru', dropLocation: 'Electronic City, Bengaluru', amount: 390 }
+   
   ];
 }
 

@@ -30,12 +30,12 @@
 
       <span class="text-xl">Vcabs Admin Dashboard</span>
     </div>
-    <button
-      class="border border-white/80 rounded-md px-4 py-2 text-sm font-medium bg-white/10 hover:bg-white/20 backdrop-blur-sm transition-all duration-200"
-      type="button"
-    >
-      Logout
-    </button>
+    <div>
+      <a
+      class="bg-[#A225CC] hover:bg-[#8B1FA8] text-white px-6 py-2 rounded-lg font-medium transition-colors"
+      routerLink="/auth/login"
+      >Logout</a>
+    </div>
   </header>
 
   <!-- Dashboard Navigation -->
@@ -57,11 +57,12 @@
         <span class="text-[#A225CC] group-hover:scale-110 transition-transform duration-200">Completed Rides</span>
       </a>
 
-      <button
+      <a
         class="group rounded-xl border border-[#A225CC]/70 bg-white shadow-md p-6 min-h-[100px] flex flex-col items-center justify-center text-center text-base font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:bg-[#F8F0FB]"
+        routerLink="/admin/cancelled-rides"
       >
         <span class="text-[#A225CC] group-hover:scale-110 transition-transform duration-200">Cancelled Rides</span>
-      </button>
+    </a>
 
       <a
         class="group rounded-xl border border-[#A225CC]/70 bg-white shadow-md p-6 min-h-[100px] flex flex-col items-center justify-center text-center text-base font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:bg-[#F8F0FB]"
@@ -70,17 +71,20 @@
         <span class="text-[#A225CC] group-hover:scale-110 transition-transform duration-200">Customers</span>
       </a>
 
-      <button
+      <a
         class="group rounded-xl border border-[#A225CC]/70 bg-white shadow-md p-6 min-h-[100px] flex flex-col items-center justify-center text-center text-base font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:bg-[#F8F0FB]"
+        routerLink="/admin/driver"
       >
-        <span class="text-[#A225CC] group-hover:scale-110 transition-transform duration-200">Drivers</span>
-      </button>
+        <span class="text-[#A225CC] group-hover:scale-110 transition-transform duration-200">Driver</span>
+      </a>
 
-      <button
+      <a
         class="group rounded-xl border border-[#A225CC]/70 bg-white shadow-md p-6 min-h-[100px] flex flex-col items-center justify-center text-center text-base font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:bg-[#F8F0FB]"
+        routerLink="/admin/billing"
+        
       >
         <span class="text-[#A225CC] group-hover:scale-110 transition-transform duration-200">Billing</span>
-      </button>
+  </a>
 
       <a
         class="group rounded-xl border border-[#A225CC]/70 bg-white shadow-md p-6 min-h-[100px] flex flex-col items-center justify-center text-center text-base font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:bg-[#F8F0FB]"
@@ -96,11 +100,12 @@
         <span class="text-[#A225CC] group-hover:scale-110 transition-transform duration-200">Audit Log</span>
       </a>
 
-      <button
+      <a
         class="group rounded-xl border border-[#A225CC]/70 bg-white shadow-md p-6 min-h-[100px] flex flex-col items-center justify-center text-center text-base font-semibold transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:bg-[#F8F0FB]"
+        routerLink="/admin/rental"
       >
-        <span class="text-[#A225CC] group-hover:scale-110 transition-transform duration-200">Rent</span>
-      </button>
+        <span class="text-[#A225CC] group-hover:scale-110 transition-transform duration-200">Rental</span>
+    </a>
     </nav>
   </main>
 </div>
