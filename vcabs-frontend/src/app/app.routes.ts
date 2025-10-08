@@ -14,8 +14,12 @@ export const routes: Routes = [
         loadChildren: () => import('./features/driver/driver-module').then(m => m.DriverRoutingModule)
     },
     {
+        path: 'passenger',
+        loadChildren: () => import('./features/passenger/passenger-module').then(m => m.PassengerModule)
+    },
+    {
         path: '',
-        redirectTo: '/auth/login',
+        redirectTo: '/passenger',
         pathMatch: 'full'
     }
 ];

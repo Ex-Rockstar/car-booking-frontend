@@ -1,0 +1,12 @@
+<div class="p-4">
+  <h1 class="text-2xl font-bold mb-4">Booking Service Demo</h1>
+  <div class="grid grid-cols-3 gap-4">
+    <div *ngFor="let cab of bookingService.getAvailableCabs()" class="p-4 border rounded-lg shadow-sm">
+      <img [src]="cab.image" alt="{{cab.name}}" class="w-full h-32 object-cover rounded">
+      <h2 class="text-lg font-semibold mt-2">{{ cab.name }}</h2>
+      <p>Type: {{ cab.type }}</p>
+      <p>Base Price: ₹{{ cab.basePrice }}</p>
+      <p>Price per Km: ₹{{ cab.pricePerKm }}</p>
+    </div>
+  </div>
+</div>

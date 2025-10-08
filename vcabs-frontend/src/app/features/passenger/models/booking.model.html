@@ -1,0 +1,21 @@
+<div class="p-4">
+  <h1 class="text-2xl font-bold mb-4">Booking Model Demo</h1>
+  <div class="bg-white shadow rounded-lg p-6">
+    <p><strong>Booking ID:</strong> {{ booking.id }}</p>
+    <p><strong>Customer ID:</strong> {{ booking.customerId }}</p>
+    <p><strong>Status:</strong> {{ booking.status }}</p>
+    <p><strong>Payment Status:</strong> {{ booking.paymentStatus }}</p>
+    <p><strong>Created At:</strong> {{ booking.createdAt | date:'short' }}</p>
+    <p><strong>Updated At:</strong> {{ booking.updatedAt | date:'short' }}</p>
+
+    <div class="mt-4 p-4 bg-gray-50 rounded-lg">
+      <h2 class="text-xl font-semibold mb-2">Booking Details</h2>
+      <p><strong>Pickup:</strong> {{ booking.bookingDetails.pickupLocation.address }}, {{ booking.bookingDetails.pickupLocation.city }}</p>
+      <p><strong>Drop:</strong> {{ booking.bookingDetails.dropLocation.address }}, {{ booking.bookingDetails.dropLocation.city }}</p>
+      <p><strong>Distance:</strong> {{ booking.bookingDetails.distance }} km</p>
+      <p><strong>Total Amount:</strong> ₹{{ booking.bookingDetails.totalAmount }}</p>
+      <p><strong>Cab Type:</strong> {{ booking.bookingDetails.cab.type }}</p>
+      <p><strong>Trip Type:</strong> {{ booking.bookingDetails.tripType }}</p>
+    </div>
+  </div>
+</div>

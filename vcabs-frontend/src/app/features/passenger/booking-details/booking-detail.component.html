@@ -1,0 +1,85 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-8">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center mb-8">
+      <button (click)="goToDashboard()" class="inline-flex items-center text-purple-600 hover:text-purple-700 mb-4">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Back to Dashboard
+      </button>
+      <h1 class="text-4xl font-bold text-gray-900 mb-2">Booking Confirmed!</h1>
+      <p class="text-gray-600">Your cab has been successfully booked</p>
+    </div>
+
+    <ng-container *ngIf="booking; else loading">
+      <!-- Booking Status -->
+      <div class="card bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-lg mb-8">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-bold mb-2">Booking Confirmed</h2>
+            <p class="text-green-100">Booking ID: {{ booking.id }}</p>
+          </div>
+          <div class="text-right">
+            <div class="text-3xl font-bold">₹{{ booking.bookingDetails.totalAmount }}</div>
+            <div class="text-green-100">Total Amount</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking Details -->
+      <div class="card p-6 bg-white rounded-lg shadow mb-8">
+        <h3 class="text-xl font-bold mb-4">Booking Details</h3>
+        <div class="space-y-4">
+          <div class="flex justify-between border-b pb-2">
+            <span>Booking ID</span>
+            <span>{{ booking.id }}</span>
+          </div>
+          <div class="flex justify-between border-b pb-2">
+            <span>Booking Type</span>
+            <span>{{ booking.bookingDetails.bookingType | titlecase }}</span>
+          </div>
+          <div class="flex justify-between border-b pb-2">
+            <span>Trip Type</span>
+            <span>{{ booking.bookingDetails.tripType | titlecase }}</span>
+          </div>
+          <div class="flex justify-between border-b pb-2">
+            <span>Cab Type</span>
+            <span>{{ booking.bookingDetails.cab.type }}</span>
+          </div>
+          <div class="flex justify-between border-b pb-2">
+            <span>Passengers</span>
+            <span>{{ booking.bookingDetails.passengers }}</span>
+          </div>
+          <div class="flex justify-between border-b pb-2">
+            <span>Travel Date</span>
+            <span>{{ booking.bookingDetails.travelDate | date:'fullDate' }}</span>
+          </div>
+          <div class="flex justify-between border-b pb-2">
+            <span>Travel Time</span>
+            <span>{{ booking.bookingDetails.travelTime }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Distance</span>
+            <span>{{ booking.bookingDetails.distance }} km</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="card p-6 flex gap-4">
+        <button (click)="goToDashboard()" class="btn-primary flex-1">Back to Dashboard</button>
+        <button (click)="cancelBooking()" *ngIf="booking.status === 'pending' || booking.status === 'confirmed'" class="btn-outline flex-1">
+          Cancel Booking
+        </button>
+      </div>
+    </ng-container>
+
+    <ng-template #loading>
+      <div class="text-center py-12">
+        <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+        <p class="text-gray-600">Loading booking details...</p>
+      </div>
+    </ng-template>
+  </div>
+</div>

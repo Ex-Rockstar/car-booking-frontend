@@ -1,0 +1,110 @@
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 py-8">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header -->
+    <div class="text-center mb-6 md:mb-8">
+      <button (click)="goBack()" class="inline-flex items-center text-purple-600 hover:text-purple-700 mb-4">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+        Back to Dashboard
+      </button>
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Trip Booking</h1>
+      <p class="text-gray-600">Book a local trip with your preferred cab</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+      <!-- Booking Form -->
+      <div class="lg:col-span-2">
+        <div class="card p-5 md:p-6 bg-white rounded-lg shadow">
+          <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6">Trip Details</h2>
+
+          <!-- Trip Type -->
+          <div class="mb-6">
+            <label class="label">Trip Type</label>
+            <div class="grid grid-cols-2 gap-4">
+              <button (click)="tripType = 'single'" [class]="tripType === 'single' ? 'btn-primary' : 'btn-outline'" class="text-center py-3">Single Trip</button>
+              <button (click)="tripType = 'round'" [class]="tripType === 'round' ? 'btn-primary' : 'btn-outline'" class="text-center py-3">Round Trip</button>
+            </div>
+          </div>
+
+          <!-- Location -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
+            <div>
+              <label class="label">Pickup Location</label>
+              <input type="text" class="input-field" [(ngModel)]="pickupLocation.address" placeholder="Enter pickup address">
+              <input type="text" class="input-field mt-2" [(ngModel)]="pickupLocation.city" placeholder="City">
+              <input type="text" class="input-field mt-2" [(ngModel)]="pickupLocation.pincode" placeholder="Pincode">
+            </div>
+            <div>
+              <label class="label">Drop Location</label>
+              <input type="text" class="input-field" [(ngModel)]="dropLocation.address" placeholder="Enter drop address">
+              <input type="text" class="input-field mt-2" [(ngModel)]="dropLocation.city" placeholder="City">
+              <input type="text" class="input-field mt-2" [(ngModel)]="dropLocation.pincode" placeholder="Pincode">
+            </div>
+          </div>
+
+          <!-- Travel Details -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
+            <div>
+              <label class="label">Travel Date</label>
+              <input type="date" class="input-field" [(ngModel)]="travelDate" [min]="today">
+            </div>
+            <div>
+              <label class="label">Travel Time</label>
+              <input type="time" class="input-field" [(ngModel)]="travelTime">
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <label class="label">Number of Passengers</label>
+            <select class="input-field" [(ngModel)]="passengers">
+              <option value="1">1 Passenger</option>
+              <option value="2">2 Passengers</option>
+              <option value="3">3 Passengers</option>
+              <option value="4">4 Passengers</option>
+              <option value="5">5 Passengers</option>
+              <option value="6">6 Passengers</option>
+              <option value="7">7 Passengers</option>
+              <option value="8">8 Passengers</option>
+            </select>
+          </div>
+
+          <div class="mb-6">
+            <label class="label">Special Requests (Optional)</label>
+            <textarea class="input-field h-24 resize-none" [(ngModel)]="specialRequests" placeholder="Any special requirements..."></textarea>
+          </div>
+
+          <div class="sticky bottom-0 bg-white pt-4 mt-2">
+            <button (click)="proceedToCabSelection()" [disabled]="!isFormValid()" class="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed">Select Cab</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cab Selection -->
+      <div *ngIf="showCabSelection" class="lg:col-span-1">
+        <div class="card p-5 md:p-6 bg-white rounded-lg shadow">
+          <h2 class="text-xl md:text-2xl font-bold mb-4 md:mb-6">Select Cab</h2>
+          <div class="space-y-4">
+            <div *ngFor="let cab of availableCabs" (click)="selectCab(cab)" [class]="selectedCab?.id === cab.id ? 'border-purple-500 bg-purple-50' : 'border-gray-200'" class="border-2 rounded-lg p-4 cursor-pointer">
+              <div class="flex justify-between items-start mb-2">
+                <h3 class="font-semibold">{{ cab.name }}</h3>
+                <span class="text-sm font-medium text-purple-600">{{ cab.type }}</span>
+              </div>
+              <div class="text-sm text-gray-600 mb-3">
+                <div>Base Price: ₹{{ cab.basePrice }}</div>
+                <div>Per KM: ₹{{ cab.pricePerKm }}</div>
+              </div>
+              <div class="flex flex-wrap gap-1 mb-3">
+                <span *ngFor="let feature of cab.features" class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">{{ feature }}</span>
+              </div>
+              <div class="text-lg font-bold text-purple-600">Total: ₹{{ calculatePrice(cab) }}</div>
+            </div>
+          </div>
+          <div class="sticky bottom-0 bg-white pt-4 mt-2">
+            <button (click)="proceedToConfirmation()" [disabled]="!selectedCab" class="btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed">Confirm Booking</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
