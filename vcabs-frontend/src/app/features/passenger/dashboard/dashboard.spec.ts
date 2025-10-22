@@ -28,3 +28,4 @@ describe('DashboardComponent', () => {
     expect(component.customer).toBeDefined();
   });
 });
+

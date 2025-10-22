@@ -19,7 +19,7 @@ export const routes: Routes = [
     },
     {
         path: '',
-        redirectTo: '/passenger',
+        redirectTo: '/auth/login',
         pathMatch: 'full'
     }
 ];

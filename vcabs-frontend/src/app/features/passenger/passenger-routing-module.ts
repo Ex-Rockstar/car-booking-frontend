@@ -1,36 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DashboardComponent } from './dashboard/dashboard';
+import { IntercityBookingComponent } from './booking/intercity-booking/intercity-booking.component';
+import { RentalBookingComponent } from './booking/rental-booking/rental-booking.component';
+import { ReserveBookingComponent } from './booking/reserve-booking/reserve-booking.component';
+import { TripBookingComponent } from './booking/trip-booking/trip-booking.component';
+import { BookingDetailsComponent } from './booking-details/booking-details.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'dashboard'
-  },
-  {
-    path: 'dashboard',
-    loadComponent: () => import('./dashboard/dashboard').then(m => m.DashboardComponent)
-  },
-  {
-    path: 'trip-booking',
-    loadComponent: () => import('./trip-booking/trip-booking.component').then(m => m.TripBookingComponent)
-  },
-  {
-    path: 'intercity-booking',
-    loadComponent: () => import('./intercity-booking/intercity-booking.component').then(m => m.IntercityBookingComponent)
-  },
-  {
-    path: 'rental-booking',
-    loadComponent: () => import('./rental-booking/rental-booking.component').then(m => m.RentalBookingComponent)
-  },
-  {
-    path: 'reserve-booking',
-    loadComponent: () => import('./reserve-booking/reserve-booking.component').then(m => m.ReserveBookingComponent)
-  },
-  {
-    path: 'booking-details/:id',
-    loadComponent: () => import('./booking-details/booking-detail.component').then(m => m.BookingDetailsComponent)
-  }
+  {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+  {path: 'dashboard', component: DashboardComponent},
+  {path: 'booking/intercity', component: IntercityBookingComponent},
+  {path: 'booking/rental', component: RentalBookingComponent},
+  {path: 'booking/reserve', component: ReserveBookingComponent},
+  {path: 'booking/trip', component: TripBookingComponent},
+  {path: 'booking-details/:id', component: BookingDetailsComponent}
 ];
 
 @NgModule({
@@ -38,3 +22,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class PassengerRoutingModule { }
+

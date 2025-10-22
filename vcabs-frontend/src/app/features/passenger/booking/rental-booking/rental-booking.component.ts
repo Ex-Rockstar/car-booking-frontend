@@ -2,22 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BookingService } from '../services/booking.service';
-import { Cab, BookingDetails, Location, BookingType } from '../models/booking.model';
+import { BookingService } from '../../services/booking.service';
+import { Cab, BookingDetails, Location, BookingType } from '../../models/booking.model';
 
 @Component({
-  selector: 'app-trip-booking',
+  selector: 'app-rental-booking',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './trip-booking.component.html',
-  styleUrls: ['./trip-booking.component.css']
+  templateUrl: './rental-booking.component.html',
+  styleUrls: ['./rental-booking.component.css']
 })
-export class TripBookingComponent implements OnInit {
-  tripType: 'single' | 'round' = 'single';
+export class RentalBookingComponent implements OnInit {
+  rentalType: 'hourly' | 'daily' = 'hourly';
   pickupLocation: Location = { address: '', city: '', state: '', pincode: '' };
   dropLocation: Location = { address: '', city: '', state: '', pincode: '' };
-  travelDate: string = '';
-  travelTime: string = '';
+  startDate: string = '';
+  startTime: string = '';
+  duration: number = 2;
   passengers: number = 1;
   specialRequests: string = '';
   
@@ -27,7 +28,6 @@ export class TripBookingComponent implements OnInit {
   showCabSelection = false;
   showConfirmation = false;
   
-  estimatedDistance = 15; 
   today = new Date().toISOString().split('T')[0];
 
   constructor(
@@ -37,12 +37,12 @@ export class TripBookingComponent implements OnInit {
 
   ngOnInit(): void {
     this.availableCabs = this.bookingService.getAvailableCabs();
-    this.travelDate = this.today;
-    this.travelTime = '09:00';
+    this.startDate = this.today;
+    this.startTime = '09:00';
   }
 
   goBack(): void {
-    this.router.navigate(['/passenger/dashboard']);
+    this.router.navigate(['/dashboard']);
   }
 
   isFormValid(): boolean {
@@ -50,11 +50,8 @@ export class TripBookingComponent implements OnInit {
       this.pickupLocation.address &&
       this.pickupLocation.city &&
       this.pickupLocation.pincode &&
-      this.dropLocation.address &&
-      this.dropLocation.city &&
-      this.dropLocation.pincode &&
-      this.travelDate &&
-      this.travelTime
+      this.startDate &&
+      this.startTime
     );
   }
 
@@ -70,7 +67,11 @@ export class TripBookingComponent implements OnInit {
 
   calculatePrice(cab: Cab): number {
     if (!cab) return 0;
-    return this.bookingService.calculatePrice(cab, this.estimatedDistance, this.tripType);
+    if (this.rentalType === 'hourly') {
+      return cab.basePrice * 0.5 * this.duration;
+    } else {
+      return cab.basePrice * 8 * this.duration;
+    }
   }
 
   proceedToConfirmation(): void {
@@ -85,21 +86,21 @@ export class TripBookingComponent implements OnInit {
     const bookingDetails: BookingDetails = {
       pickupLocation: this.pickupLocation,
       dropLocation: this.dropLocation,
-      distance: this.estimatedDistance,
-      estimatedDuration: 45,
+      distance: 0,
+      estimatedDuration: this.rentalType === 'hourly' ? this.duration * 60 : this.duration * 24 * 60,
       cab: this.selectedCab,
-      tripType: this.tripType,
-      bookingType: 'trip' as BookingType,
+      tripType: 'single',
+      bookingType: 'rental' as BookingType,
       totalAmount: this.calculatePrice(this.selectedCab),
       bookingDate: new Date(),
-      travelDate: new Date(this.travelDate),
-      travelTime: this.travelTime,
+      travelDate: new Date(this.startDate),
+      travelTime: this.startTime,
       passengers: this.passengers,
       specialRequests: this.specialRequests
     };
 
-    this.bookingService.createBooking(bookingDetails).subscribe((booking) => {
-      this.router.navigate(['/booking-details', booking.id]);
+    this.bookingService.createBooking(bookingDetails).subscribe(booking => {
+      this.router.navigate(['/passenger/booking-details', booking.id]);
     });
   }
 
@@ -109,3 +110,5 @@ export class TripBookingComponent implements OnInit {
     this.selectedCab = null;
   }
 }
+
+

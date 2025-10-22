@@ -8,8 +8,8 @@ import { Booking } from '../models/booking.model';
   selector: 'app-booking-details',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './booking-detail.component.html',
-  styleUrls: ['./booking-detail.component.css']
+  templateUrl: './booking-details.component.html',
+  styleUrls: ['./booking-details.component.css']
 })
 export class BookingDetailsComponent implements OnInit {
   booking: Booking | null = null;
@@ -27,13 +27,13 @@ export class BookingDetailsComponent implements OnInit {
   }
 
   private loadBookingDetails(): void {
-    this.bookingService.getBookingById(this.bookingId).subscribe((booking: Booking | undefined) => {
+    this.bookingService.getBookingById(this.bookingId).subscribe(booking => {
       this.booking = booking || null;
     });
   }
 
   goToDashboard(): void {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate(['/passenger/dashboard']);
   }
 
   cancelBooking(): void {
@@ -44,3 +44,5 @@ export class BookingDetailsComponent implements OnInit {
     }
   }
 }
+
+

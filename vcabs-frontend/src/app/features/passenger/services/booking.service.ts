@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Booking, BookingDetails, BookingStats, Cab } from '../models/booking.model';
+import { Booking, BookingDetails, Cab, BookingStats } from '../models/booking.model';
 
 @Injectable({
   providedIn: 'root'
@@ -54,7 +53,6 @@ export class BookingService {
     const basePrice = cab.basePrice;
     const distancePrice = distance * cab.pricePerKm;
     const totalPrice = basePrice + distancePrice;
-
     return tripType === 'round' ? totalPrice * 2 : totalPrice;
   }
 
@@ -64,7 +62,7 @@ export class BookingService {
         id: this.generateBookingId(),
         customerId: 'customer-1',
         bookingDetails,
-        status: 'confirmed',
+        status: 'pending',
         createdAt: new Date(),
         updatedAt: new Date(),
         paymentStatus: 'pending'
@@ -121,29 +119,29 @@ export class BookingService {
   }
 
   getBookingStats(): Observable<BookingStats> {
-    return this.bookingsSubject.asObservable().pipe(
-      map((bookings: Booking[]) => {
-        const confirmedBookings = bookings.filter(b => b.status === 'confirmed' || b.status === 'completed');
+    return new Observable(observer => {
+      const bookings = this.bookingsSubject.value;
+      const confirmedBookings = bookings.filter(b => b.status === 'confirmed' || b.status === 'completed');
 
-        return {
-          totalBookings: confirmedBookings.length,
-          totalSpent: confirmedBookings.reduce((sum, b) => sum + b.bookingDetails.totalAmount, 0),
-          averageBookingValue: confirmedBookings.length > 0
-            ? confirmedBookings.reduce((sum, b) => sum + b.bookingDetails.totalAmount, 0) / confirmedBookings.length
-            : 0,
-          favoriteCabType: this.getMostUsedCabType(confirmedBookings),
-          lastBookingDate: confirmedBookings.length > 0
-            ? new Date(Math.max(...confirmedBookings.map(b => b.createdAt.getTime())))
-            : new Date(),
-          bookingsByType: {
-            trip: confirmedBookings.filter(b => b.bookingDetails.bookingType === 'trip').length,
-            intercity: confirmedBookings.filter(b => b.bookingDetails.bookingType === 'intercity').length,
-            rental: confirmedBookings.filter(b => b.bookingDetails.bookingType === 'rental').length,
-            reserve: confirmedBookings.filter(b => b.bookingDetails.bookingType === 'reserve').length
-          }
-        } as BookingStats;
-      })
-    );
+      const stats: BookingStats = {
+        totalBookings: confirmedBookings.length,
+        totalSpent: confirmedBookings.reduce((sum, b) => sum + b.bookingDetails.totalAmount, 0),
+        averageBookingValue: confirmedBookings.length > 0 ?
+          confirmedBookings.reduce((sum, b) => sum + b.bookingDetails.totalAmount, 0) / confirmedBookings.length : 0,
+        favoriteCabType: this.getMostUsedCabType(confirmedBookings),
+        lastBookingDate: confirmedBookings.length > 0 ?
+          new Date(Math.max(...confirmedBookings.map(b => b.createdAt.getTime()))) : new Date(),
+        bookingsByType: {
+          trip: confirmedBookings.filter(b => b.bookingDetails.bookingType === 'trip').length,
+          intercity: confirmedBookings.filter(b => b.bookingDetails.bookingType === 'intercity').length,
+          rental: confirmedBookings.filter(b => b.bookingDetails.bookingType === 'rental').length,
+          reserve: confirmedBookings.filter(b => b.bookingDetails.bookingType === 'reserve').length
+        }
+      };
+
+      observer.next(stats);
+      observer.complete();
+    });
   }
 
   private generateBookingId(): string {
@@ -168,9 +166,19 @@ export class BookingService {
         id: 'BK001',
         customerId: 'customer-1',
         bookingDetails: {
-          pickupLocation: { address: '123 Main Street', city: 'Mumbai', state: 'Maharashtra', pincode: '400001' },
-          dropLocation: { address: '456 Business District', city: 'Mumbai', state: 'Maharashtra', pincode: '400002' },
-          distance: 45,
+          pickupLocation: {
+            address: '123 Main Street',
+            city: 'Mumbai',
+            state: 'Maharashtra',
+            pincode: '400001'
+          },
+          dropLocation: {
+            address: '456 Business District',
+            city: 'Mumbai',
+            state: 'Maharashtra',
+            pincode: '400002'
+          },
+          distance: 15,
           estimatedDuration: 45,
           cab: this.availableCabs[0],
           tripType: 'single',
@@ -191,3 +199,5 @@ export class BookingService {
     this.bookingsSubject.next(sampleBookings);
   }
 }
+
+
