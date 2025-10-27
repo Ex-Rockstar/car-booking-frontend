@@ -1,27 +1,82 @@
-<div class="max-w-3xl mx-auto p-6 space-y-8">
-  <h1 class="text-3xl font-bold mb-6">Driver Dashboard</h1>
+<header class="flex items-center justify-between py-5 px-6 border-b">
+  <div>
+    <h1 class="text-2xl font-bold">Welcome, {{ driverName }}</h1>
+    <span class="text-sm text-gray-500">Driver ID: {{ driverId }}</span>
+  </div>
+  <div class="flex items-center gap-4">
+    <!-- Go Offline Button -->
+     <app-availability-toggle [(isAvailable)]="isOnline"></app-availability-toggle>
+  <app-break-mode
+    [isOnBreak]="isOnBreak"
+    [breakReason]="breakReason"
+    (BreakMode)="onBreakModeChange($event)">
+  </app-break-mode> 
+    <!-- Profile Button -->
+    <button routerLink="/driver/profile" class="btn btn-outline-primary px-4 py-2 rounded-lg border border-gray-300 hover:bg-gray-100 transition">
+      Profile
+    </button>
+  </div>
+</header>
 
-  <section>
-    <app-availability-toggle
-      [(isAvailable)]="isOnline">
-    </app-availability-toggle>
-  </section>
 
-  <section>
-    <app-break-mode
-      [isOnBreak]="isOnBreak"
-      [breakReason]="breakReason"
-      (BreakMode)="onBreakModeChange($event)">
-    </app-break-mode>
-  </section>
+<!-- <app-status-summary
+  [currentStatus]="currentStatus"
+  [currentTimestamp]="currentTimestamp"
+  [statusLogs]="statusLogs">
+</app-status-summary> -->
 
-  <section>
-    <app-status-summary #statusLogger
-      [currentStatus]="currentStatus"
-      [currentTimestamp]="currentTimestamp"
-      [statusLogs]="statusLogs">
-    </app-status-summary>
-  </section>
-
-  <p class="text-lg">Current Status: <strong>{{ isOnline ? 'Online' : 'Offline' }}</strong></p>
+<!-- Incoming Ride Request Popup -->
+<div *ngIf="incomingRideRequest" class="fixed bottom-6 right-6 w-96 bg-white rounded-xl shadow-lg p-6 z-50 flex flex-col space-y-3">
+  <h2 class="text-xl font-semibold">Incoming Ride Request</h2>
+  <div>
+    <p><strong>Passenger:</strong> {{ incomingRideRequest.passengerName }}</p>
+    <p><strong>Pickup:</strong> {{ incomingRideRequest.pickupLocation }}</p>
+    <p><strong>Drop:</strong> {{ incomingRideRequest.dropLocation }}</p>
+    <p><strong>Distance:</strong> {{ incomingRideRequest.distance }} km</p>
+    <p><strong>Fare:</strong> ₹{{ incomingRideRequest.fare }}</p>
+  </div>
+  <div class="flex justify-end space-x-4 mt-4">
+    <button (click)="rejectRequest()" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg">Reject</button>
+    <button (click)="acceptRequest()" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg">Accept</button>
+  </div>
 </div>
+
+<section class="my-6 grid sm:grid-cols-4 gap-4">
+  <stat-card icon="🚗" label="Rides Today" [value]="stats.today.rides"></stat-card>
+  <stat-card icon="💰" label="Earnings" [value]="'₹' + stats.today.earnings"></stat-card>
+  <stat-card icon="⭐" label="Rating" [value]="stats.today.rating"></stat-card>
+  <stat-card icon="🕒" label="Hrs Online" [value]="stats.today.time"></stat-card>
+</section>
+
+<section>
+  <button routerLink="/driver/rides"
+          class="block w-full bg-blue-600 text-white py-4 rounded-xl text-xl shadow hover:bg-blue-700 font-semibold">
+    Manage Rides & History
+  </button>
+</section>
+
+<section>
+  <h2 class="text-lg mt-10 mb-4 font-bold">Recent Rider Feedback</h2>
+  <div *ngFor="let feedback of recentFeedback" class="mb-2 pb-2 border-b">
+    <div class="flex justify-between items-center">
+      <span class="text-md font-medium">{{ feedback.rider }}</span>
+      <span>⭐ {{ feedback.rating }}</span>
+    </div>
+    <div class="text-gray-700">{{ feedback.comment }}</div>
+    <div class="text-xs text-gray-400">{{ feedback.date | date:'short' }}</div>
+  </div>
+  <a routerLink="/driver/ratings" class="text-blue-600 text-xs block mt-2 text-right">See all</a>
+</section>
+
+<section *ngIf="notifications.length > 0" class="mt-8">
+  <div *ngFor="let note of notifications" class="p-3 rounded bg-blue-100 my-1 text-blue-700">
+    {{ note.message }}
+  </div>
+</section>
+
+<section class="my-4">
+  <button routerLink="/driver/support"
+          class="block w-full py-3 rounded-xl bg-yellow-500 font-bold text-white hover:bg-yellow-600">
+    Need Help? Contact Support
+  </button>
+</section>
