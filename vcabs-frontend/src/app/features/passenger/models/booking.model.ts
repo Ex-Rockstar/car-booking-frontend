@@ -1,23 +1,22 @@
-
-// Centralized booking-related types used by passenger features
+export interface Cab {
+  id: string;
+  type: '4-seater' | '6-seater' | '8-seater';
+  name: string;
+  basePrice: number;
+  pricePerKm: number;
+  image: string;
+  features: string[];
+}
 
 export interface Location {
   address: string;
   city: string;
   state: string;
   pincode: string;
-}
-
-export type BookingType = 'trip' | 'intercity' | 'rental' | 'reserve';
-
-export interface Cab {
-  id: string;
-  type: string;
-  name: string;
-  basePrice: number;
-  pricePerKm: number;
-  image: string;
-  features: string[];
+  coordinates?: {
+    lat: number;
+    lng: number;
+  };
 }
 
 export interface BookingDetails {
@@ -36,6 +35,8 @@ export interface BookingDetails {
   specialRequests?: string;
 }
 
+export type BookingType = 'trip' | 'intercity' | 'rental' | 'reserve';
+
 export interface Booking {
   id: string;
   customerId: string;
@@ -43,7 +44,21 @@ export interface Booking {
   status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
   createdAt: Date;
   updatedAt: Date;
-  paymentStatus: 'pending' | 'paid' | 'failed';
+  paymentStatus: 'pending' | 'paid' | 'refunded';
+}
+
+export interface Customer {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  totalBookings: number;
+  totalSpent: number;
+  memberSince: Date;
+  preferences: {
+    preferredCabType: '4-seater' | '6-seater' | '8-seater';
+    preferredPaymentMethod: string;
+  };
 }
 
 export interface BookingStats {
@@ -60,16 +75,4 @@ export interface BookingStats {
   };
 }
 
-export interface Customer {
-  id: string;
-  name: string;
-  email: string;
-  phone: string;
-  totalBookings: number;
-  totalSpent: number;
-  memberSince: Date;
-  preferences: {
-    preferredCabType: string;
-    preferredPaymentMethod: string;
-  };
-}
+

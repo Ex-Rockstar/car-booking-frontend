@@ -2,17 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { BookingService } from '../services/booking.service';
-import { Cab, BookingDetails, Location, BookingType } from '../models/booking.model';
+import { BookingService } from '../../services/booking.service';
+import { Cab, BookingDetails, Location, BookingType } from '../../models/booking.model';
 
 @Component({
-  selector: 'app-intercity-booking',
+  selector: 'app-reserve-booking',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './intercity-booking.component.html',
-  styleUrls: ['./intercity-booking.component.css']
+  templateUrl: './reserve-booking.component.html',
+  styleUrls: ['./reserve-booking.component.css']
 })
-export class IntercityBookingComponent implements OnInit {
+export class ReserveBookingComponent implements OnInit {
   tripType: 'single' | 'round' = 'single';
   pickupLocation: Location = { address: '', city: '', state: '', pincode: '' };
   dropLocation: Location = { address: '', city: '', state: '', pincode: '' };
@@ -20,15 +20,15 @@ export class IntercityBookingComponent implements OnInit {
   travelTime: string = '';
   passengers: number = 1;
   specialRequests: string = '';
-
+  
   availableCabs: Cab[] = [];
   selectedCab: Cab | null = null;
-
+  
   showCabSelection = false;
   showConfirmation = false;
-
-  estimatedDistance = 120;
-  today = new Date().toISOString().split('T')[0];
+  
+  estimatedDistance = 20;
+  tomorrow = '';
 
   constructor(
     private bookingService: BookingService,
@@ -37,18 +37,25 @@ export class IntercityBookingComponent implements OnInit {
 
   ngOnInit(): void {
     this.availableCabs = this.bookingService.getAvailableCabs();
-    this.travelDate = this.today;
+    const tomorrowDate = new Date();
+    tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+    this.tomorrow = tomorrowDate.toISOString().split('T')[0];
+    this.travelDate = this.tomorrow;
     this.travelTime = '09:00';
   }
 
   goBack(): void {
-    this.router.navigate(['/passenger/dashboard']);
+    this.router.navigate(['/dashboard']);
   }
 
   isFormValid(): boolean {
     return !!(
+      this.pickupLocation.address &&
       this.pickupLocation.city &&
+      this.pickupLocation.pincode &&
+      this.dropLocation.address &&
       this.dropLocation.city &&
+      this.dropLocation.pincode &&
       this.travelDate &&
       this.travelTime
     );
@@ -82,10 +89,10 @@ export class IntercityBookingComponent implements OnInit {
       pickupLocation: this.pickupLocation,
       dropLocation: this.dropLocation,
       distance: this.estimatedDistance,
-      estimatedDuration: 180,
+      estimatedDuration: 60,
       cab: this.selectedCab,
       tripType: this.tripType,
-      bookingType: 'intercity' as BookingType,
+      bookingType: 'reserve' as BookingType,
       totalAmount: this.calculatePrice(this.selectedCab),
       bookingDate: new Date(),
       travelDate: new Date(this.travelDate),
@@ -94,8 +101,8 @@ export class IntercityBookingComponent implements OnInit {
       specialRequests: this.specialRequests
     };
 
-    this.bookingService.createBooking(bookingDetails).subscribe((booking) => {
-      this.router.navigate(['/booking-details', booking.id]);
+    this.bookingService.createBooking(bookingDetails).subscribe(booking => {
+      this.router.navigate(['/passenger/booking-details', booking.id]);
     });
   }
 
@@ -105,4 +112,5 @@ export class IntercityBookingComponent implements OnInit {
     this.selectedCab = null;
   }
 }
+
 

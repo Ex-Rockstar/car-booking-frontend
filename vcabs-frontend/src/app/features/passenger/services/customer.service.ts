@@ -35,3 +35,5 @@ export class CustomerService {
     this.currentCustomer.totalSpent = totalSpent;
   }
 }
+
+

@@ -1,5 +1,4 @@
-import { Booking } from './booking.model';
-import { BookingDetails } from './booking-details.model';
+import { Booking, BookingDetails } from './booking.model';
 
 describe('Booking Model', () => {
   it('should create a booking object correctly', () => {
