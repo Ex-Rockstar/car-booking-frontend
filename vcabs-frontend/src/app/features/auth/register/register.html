@@ -1,0 +1,25 @@
+<div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
+  <div class="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden"
+       animate.enter="fade-slide-in">
+    <div class="px-8 pt-8 pb-6 text-center">
+      <h1 class="text-3xl font-bold text-slate-900 mb-2">Create Account</h1>
+      <p class="text-slate-600 text-sm">Choose how you want to sign up</p>
+    </div>
+
+    <div class="px-8 pb-8 space-y-4">
+      <button type="button" (click)="goToAdmin()"
+        class="w-full py-3 px-4 bg-slate-900 text-white font-semibold rounded-lg hover:bg-slate-800 transition">Sign up as Admin</button>
+      <button type="button" (click)="goToDriver()"
+        class="w-full py-3 px-4 bg-emerald-600 text-white font-semibold rounded-lg hover:bg-emerald-500 transition">Sign up as Driver</button>
+      <button type="button" (click)="goToCustomer()"
+        class="w-full py-3 px-4 bg-[#a225cc] text-white font-semibold rounded-lg hover:bg-purple-700 transition">Sign up as Customer</button>
+
+      <div class="text-center mt-6">
+        <p class="text-sm text-slate-600">
+          Already have an account?
+          <a routerLink="/auth/login" class="text-[#a225cc] hover:text-purple-700 font-medium transition-colors duration-200">Login here</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
