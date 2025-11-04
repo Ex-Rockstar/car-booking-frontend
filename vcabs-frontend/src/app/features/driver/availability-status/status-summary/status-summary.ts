@@ -14,7 +14,7 @@ export interface StatusLog {
   imports: [CommonModule],
   templateUrl: './status-summary.html',
   styleUrls: ['./status-summary.css']
-})  
+})
 export class StatusSummaryComponent implements OnInit {
   @Input() currentStatus: 'Online' | 'Offline' | 'Break' = 'Offline';
   @Input() currentTimestamp: Date = new Date();

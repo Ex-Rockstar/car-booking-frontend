@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
+import { NotificationService } from '../../../core/services/notification.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -10,24 +13,22 @@ import { Router } from '@angular/router';
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
-export class Login implements OnInit {
+export class Login {
   loginForm: FormGroup;
   isLoading = false;
   showPassword = false;
 
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) {
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       rememberMe: [false]
     });
-  }
-
-  ngOnInit(): void {
-    // Form initialization complete
   }
 
   // Getter methods for easy access to form fields
@@ -63,24 +64,50 @@ export class Login implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.loginForm.valid) {
-      this.isLoading = true;
-      
-      // Simulate API call
-      setTimeout(() => {
-        console.log('Login form submitted:', this.loginForm.value);
-        this.isLoading = false;
-        // Navigate to dashboard or handle successful login
-        // this.router.navigate(['/dashboard']);
-      }, 2000);
-    } else {
-      // Mark all fields as touched to show validation errors
+    // Validate form
+    if (!this.loginForm.valid) {
       this.loginForm.markAllAsTouched();
+      this.notificationService.warning('Please fill all required fields correctly');
+      return;
     }
+
+    this.isLoading = true;
+
+    const email = this.email?.value;
+    const password = this.password?.value;
+
+    this.authService.login(email, password)
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          // Store remember me preference
+          if (this.rememberMe?.value) {
+            localStorage.setItem('rememberMe', 'true');
+          }
+
+          this.notificationService.success('Login successful! Redirecting...');
+          
+          // Navigate based on user role
+          setTimeout(() => {
+            this.authService.navigateByRole();
+          }, 1000);
+        },
+        error: (error) => {
+          // Error is already handled by interceptor
+          // Additional component-specific error handling can go here if needed
+          console.error('Login error:', error);
+        }
+      });
   }
 
+
   onForgotPassword(): void {
-    console.log('Redirect to forgot password page');
-    // Handle forgot password logic
+    // Navigate to forgot password page
+    this.router.navigate(['/auth/forgot-password']);
   }
 }
+
